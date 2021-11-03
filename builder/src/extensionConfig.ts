@@ -273,6 +273,11 @@ function generateConfig({
 
   if (mode === 'development') {
     const logPath = path.join(outputPath, 'build_log.json');
+    // Be default, regex properties will look like empty objects "{}"
+    // This modification allows us to see regex values as strings
+    Object.defineProperty(RegExp.prototype, 'toJSON', {
+      value: RegExp.prototype.toString,
+    });
     fs.writeFileSync(logPath, JSON.stringify(config, null, '  '));
   }
   return config;
